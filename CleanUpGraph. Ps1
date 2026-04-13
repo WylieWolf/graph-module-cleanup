@@ -1,0 +1,115 @@
+# List of Microsoft Graph modules to check/uninstall
+$modules = @(
+    # User modules
+    "Microsoft.Graph.Users.Actions"
+    "Microsoft.Graph.Users.Functions"
+    "Microsoft.Graph.Users"
+
+    # Device management family
+    "Microsoft.Graph.DeviceManagement.Administration"
+    "Microsoft.Graph.DeviceManagement.Enrolment"
+    "Microsoft.Graph.DeviceManagement.Functions"
+    "Microsoft.Graph.DeviceManagement"
+
+    # All other service modules (alphabetical)
+    "Microsoft.Graph.Applications"
+    "Microsoft.Graph.BackupRestore"
+    "Microsoft.Graph.Bookings"
+    "Microsoft.Graph.Calendar"
+    "Microsoft.Graph.ChangeNotifications"
+    "Microsoft.Graph.CloudCommunications"
+    "Microsoft.Graph.Compliance"
+    "Microsoft.Graph.CrossDeviceExperiences"
+    "Microsoft.Graph.Devices.CloudPrint"
+    "Microsoft.Graph.Devices.CorporateManagement"
+    "Microsoft.Graph.Devices.ServiceAnnouncement"
+    "Microsoft.Graph.DirectoryObjects"
+    "Microsoft.Graph.Education"
+    "Microsoft.Graph.Files"
+    "Microsoft.Graph.Groups"
+    "Microsoft.Graph.Identity.DirectoryManagement"
+    "Microsoft.Graph.Identity.Governance"
+    "Microsoft.Graph.Identity.Partner"
+    "Microsoft.Graph.Identity.SignIns"
+    "Microsoft.Graph.Mail"
+    "Microsoft.Graph.Notes"
+    "Microsoft.Graph.People"
+    "Microsoft.Graph.PersonalContacts"
+    "Microsoft.Graph.Planner"
+    "Microsoft.Graph.Reports"
+    "Microsoft.Graph.SchemaExtensions"
+    "Microsoft.Graph.Search"
+    "Microsoft.Graph.Security"
+    "Microsoft.Graph.Sites"
+    "Microsoft.Graph.Teams"
+    #Beta Modules
+"Microsoft.Graph.Beta.Applications"
+    "Microsoft.Graph.Beta.BackupRestore"
+    "Microsoft.Graph.Beta.Bookings"
+    "Microsoft.Graph.Beta.BusinessScenario"
+    "Microsoft.Graph.Beta.Calendar"
+    "Microsoft.Graph.Beta.ChangeNotifications"
+    "Microsoft.Graph.Beta.CloudCommunications"
+    "Microsoft.Graph.Beta.Compliance"
+    "Microsoft.Graph.Beta.CrossDeviceExperiences"
+    "Microsoft.Graph.Beta.DeviceManagement"
+    "Microsoft.Graph.Beta.DeviceManagement.Administration"
+    "Microsoft.Graph.Beta.DeviceManagement.Enrollment"
+    "Microsoft.Graph.Beta.DeviceManagement.Functions"
+    "Microsoft.Graph.Beta.Devices.CloudPrint"
+    "Microsoft.Graph.Beta.Devices.CorporateManagement"
+    "Microsoft.Graph.Beta.Devices.ServiceAnnouncement"
+    "Microsoft.Graph.Beta.DirectoryObjects"
+    "Microsoft.Graph.Beta.Education"
+    "Microsoft.Graph.Beta.Files"
+    "Microsoft.Graph.Beta.Financials"
+    "Microsoft.Graph.Beta.Groups"
+    "Microsoft.Graph.Beta.Identity.DirectoryManagement"
+    "Microsoft.Graph.Beta.Identity.Governance"
+    "Microsoft.Graph.Beta.Identity.Partner"
+    "Microsoft.Graph.Beta.Identity.SignIns"
+    "Microsoft.Graph.Beta.Mail"
+    "Microsoft.Graph.Beta.ManagedTenants"
+    "Microsoft.Graph.Beta.Migrations"
+    "Microsoft.Graph.Beta.NetworkAccess"
+    "Microsoft.Graph.Beta.Notes"
+    "Microsoft.Graph.Beta.People"
+    "Microsoft.Graph.Beta.PersonalContacts"
+    "Microsoft.Graph.Beta.Planner"
+    "Microsoft.Graph.Beta.Reports"
+    "Microsoft.Graph.Beta.SchemaExtensions"
+    "Microsoft.Graph.Beta.Search"
+    "Microsoft.Graph.Beta.Security"
+    "Microsoft.Graph.Beta.Sites"
+    "Microsoft.Graph.Beta.Teams"
+    "Microsoft.Graph.Beta.Users"
+    "Microsoft.Graph.Beta.Users.Actions"
+    "Microsoft.Graph.Beta.Users.Functions"
+    "Microsoft.Graph.Beta.WindowsUpdates"
+)
+
+foreach ($module in $modules) {
+    Write-Host "=============================="
+    Write-Host "Processing module: $module"
+    Write-Host "=============================="
+
+    # Check if installed via PowerShellGet
+    $installedModule = Get-InstalledModule -Name $module -ErrorAction SilentlyContinue
+
+    if ($installedModule) {
+        Write-Host "Installed module found: $module"
+        Get-InstalledModule -Name $module
+
+        # Uninstall all versions
+        Write-Host "Uninstalling all versions of $module..."
+        Get-InstalledModule -Name $module | Uninstall-Module -AllVersions -Force
+    }
+    else {
+        Write-Host "Module not found in Get-InstalledModule: $module"
+    }
+
+    # Check for any remaining available versions
+    Write-Host "Checking locally available copies of $module..."
+    Get-Module -Name $module -ListAvailable
+    Write-Host ""
+}
